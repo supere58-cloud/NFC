@@ -49,12 +49,12 @@ Assumptions behind every row:
 
 | Module | Landed cost | Price, in person | Price, own shop | Price, Etsy |
 |---|---|---|---|---|
-| AliExpress keychain ($10.91) | $15.1-15.4 | $45-46 | $47-48 | $51-51 |
-| Own build: panel ($5.85) + own NFC board (~$5, estimate) | $16.3-16.6 | $49-50 | $51-52 | $55-55 |
-| Good Display DMPL0154FN1 ($13.96) | $22.1-22.4 | $66-67 | $69-69 | $74-75 |
-| Good Display GDP0154NF2 ($17.76) | $26.9-27.2 | $81-81 | $83-84 | $90-91 |
+| AliExpress keychain ($10.91) | $15.1-15.4 | $45-46 | $47-48 | $51 |
+| Own build: panel ($5.85) + own NFC board (~$5, estimate) | $16.3-16.6 | $49-50 | $51-52 | $55 |
+| Good Display DMPL0154FN1 ($13.96) | $22.1-22.4 | $66-67 | $69 | $74-75 |
+| Good Display GDP0154NF2 ($17.76) | $26.9-27.2 | $81 | $83-84 | $90-91 |
 | Shellrus bare module ($25.00) | $35.4-35.7 | $106-107 | $110-111 | $118-119 |
-| Waveshare (G) ($26.63) | $37.4-37.7 | $112-113 | $116-117 | $125-125 |
+| Waveshare (G) ($26.63) | $37.4-37.7 | $112-113 | $116-117 | $125 |
 
 ## The other direction: what a market price allows
 
