@@ -93,3 +93,43 @@ and the profile page.
 - Locked tags can't be changed later. Offer locking, don't do it by default,
   unless the link points to a page you control.
 - A URL you host must stay online for as long as the tags are in use.
+
+## Actual tag dimensions
+
+Vendors don't agree on thickness and rarely say whether "30 mm" is the
+sticker or the antenna. Measure a sample before printing.
+
+| Tag | Outer size | Antenna | Thickness | Source |
+|---|---|---|---|---|
+| Anti-metal sticker, 25 mm | 25 mm round | - | 0.3 mm (total, "ultra-thin") | Amazon listing |
+| Anti-metal sticker, 30 mm (ZipNFC) | 30 mm round | 25 mm | ferrite layer alone 0.2 mm; total not stated | ZipNFC |
+| On-metal PVC disc, 30 mm (Seritag) | 30 mm round | - | 1.0 mm | Seritag |
+| NFC business card (ISO ID-1, credit-card size) | 85.60 x 53.98 mm | - | 0.76 mm standard, 0.84 mm common for PVC NFC cards | ISO/IEC 7810 (from memory) |
+
+Build D defaults to a 1.0 mm pocket. For 0.3 mm stickers set
+`TapTag.tag_t = 0.3` and re-run, or the tag sits loose under the pad.
+
+## Images, PDFs and company cards
+
+No NFC tag holds a usable image or PDF.
+
+| Chip | Memory | Holds |
+|---|---|---|
+| NTAG213 / 215 / 216 | 144 / 504 / 888 bytes | Link, or a short contact card |
+| MIFARE DESFire EV3 8K (card) | 8 KB | Thumbnail-size JPEG at best, ~$1.80-3.35 per card |
+| ST25DV64K (chip, needs your own antenna board) | 8 KB | Same, ~$0.85 per chip |
+
+A phone photo is 2-5 MB, about 500 times more than the largest tag. Phones
+also don't show an image or PDF stored on a tag when tapped. iPhone background
+reading only opens a web link.
+
+What works:
+1. **Link to a hosted page, image or PDF.** Any NTAG213 is enough. It works
+   on every phone, and you can change the content without touching the tag.
+   This is how every "digital business card" product works.
+2. **Credit-card-size NFC business card** with a printed logo, holding that
+   same link. That is the "company card" format.
+3. **An e-ink NFC tag** if the image has to be visible without a phone (the
+   1.54" modules in `pricing/README.md`).
+4. **Contact card stored on the tag itself** (NTAG216, no photo). It works
+   offline, but iPhones handle it inconsistently.
