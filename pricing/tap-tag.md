@@ -19,8 +19,9 @@ Prices are USD from public listings in November 2026. Run
 
 Common to all: 13.56 MHz, ISO/IEC 14443-A, no battery, rewritable until you
 lock it. NTAG21x can also be write-protected with a password. NXP rates the
-NTAG21x for 10 years data retention and 100,000 writes (from the datasheet as I
-remember it; verify before quoting it to customers). Read distance with a phone
+NTAG213F/216F for 10 years data retention and 100,000 write cycles at 22 °C
+(datasheet Rev. 3.6, Table 31); the plain NTAG213/215/216 is expected to match
+but its datasheet hasn't been checked here. Read distance with a phone
 is about 1-4 cm and depends on the reading phone.
 
 **My recommendation: NTAG213 holding a URL to a profile page you host.** The
@@ -133,3 +134,37 @@ What works:
    1.54" modules in `pricing/README.md`).
 4. **Contact card stored on the tag itself** (NTAG216, no photo). It works
    offline, but iPhones handle it inconsistently.
+
+## Chip package dimensions: NTAG213F / NTAG216F
+
+Source: NXP NTAG213F/216F product data sheet, Rev. 3.6 (28 Sep 2015),
+Fig 23, package outline SOT1312AB2 (HXSON4), page 48.
+
+This is the packaged chip you solder onto your own antenna PCB. It is the
+"F" (field-detect) variant: NTAG213F = 144 bytes, NTAG216F = 888 bytes, and
+there is no NTAG215F. Ready-made stickers use the plain NTAG213/215/216 as a
+bare die bonded straight onto the antenna, which this datasheet doesn't cover.
+
+Order codes: NT2H1311F0DTL (NTAG213F), NT2H1611F0DTL (NTAG216F).
+
+| Dimension | Symbol | Min | Nom | Max (mm) |
+|---|---|---|---|---|
+| Body length | E | 1.90 | 2.00 | 2.10 |
+| Body width | D | 1.40 | 1.50 | 1.60 |
+| Height | A | 0.47 | 0.49 | 0.50 |
+| Standoff | A1 | 0.00 | - | 0.05 |
+| Terminal thickness | A3 | 0.050 | - | 0.152 |
+| Terminal width | b | 0.20 | 0.25 | 0.30 |
+| Terminal length | L | 0.30 | 0.35 | 0.40 |
+| Terminal pitch | e | - | 0.5 | - |
+| Exposed pad length | Eh | 0.75 | 0.80 | 0.85 |
+| Exposed pad width | Dh | 0.95 | 1.00 | 1.05 |
+| Pad to terminal gap | K | 0.20 | - | - |
+
+Note 1 of the drawing: plastic or metal protrusions of up to 0.075 mm per side
+are not included.
+
+Pins: 1 GND, 2 LB (antenna), 3 FD (field detect), 4 LA (antenna). NXP
+recommends leaving the central pad floating. Input capacitance 50 pF.
+Operating distance "up to 100 mm" depending on the antenna and reader; a
+phone reading a 25-30 mm antenna gets a few centimetres.
