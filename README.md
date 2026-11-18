@@ -1,4 +1,4 @@
-# NFC e-ink phone tag casings
+# NFC phone tag casings
 
 Parametric, 3D-printable casings for 1.54" battery-free NFC e-ink modules
 (200 x 200, black / white / red / yellow), with either a flat adhesive back or
@@ -13,6 +13,10 @@ magnet wings for mounting on a phone.
 | A | Bare module: panel + NFC driver board (Shellrus module, or Good Display GDEM0154F51H + NFC-D1-0154) | `A_bare_shell_*` + `A_bare_lid` | 35.5 x 42.8 x 4.3 / 49.5 x 42.8 x 4.3 mm |
 | B | Waveshare 1.54inch NFC-Powered e-Paper (G), already cased | `B_waveshare_cradle_*` | 44.5 x 51.0 x 6.3 / 58.5 x 51.0 x 6.3 mm |
 | C | Good Display finished tag (GDNS0154AL / GDP0154NF2) | `C_gooddisplay_tag_cradle_*` | 39.8 x 50.3 x 4.8 / 53.8 x 50.3 x 4.8 mm |
+| D | Screenless tap-to-share tag: 25 or 30 mm anti-metal NFC sticker | `D_tap_puck_*` | 29.1 or 34.1 dia x 1.7 / 58.0 dia x 2.7 mm |
+
+Specs and pricing: `pricing/README.md` (e-ink) and `pricing/tap-tag.md`
+(screenless).
 
 Files are in `cases/out/`: `.stl` to print, `.step` to edit in CAD.
 

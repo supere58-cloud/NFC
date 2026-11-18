@@ -13,13 +13,13 @@ from nfc_eink_cases import OUT, build_all
 
 parts, _ = build_all()
 names = list(parts)
-fig = plt.figure(figsize=(16, 8))
+fig = plt.figure(figsize=(16, 12))
 for i, name in enumerate(names):
-    ax = fig.add_subplot(2, 4, i + 1, projection="3d")
+    ax = fig.add_subplot(3, 4, i + 1, projection="3d")
     verts, tris = parts[name].val().tessellate(0.05)
     v = np.array([(p.x, p.y, p.z) for p in verts])
     # shells are modelled face-down; flip them so the window faces the viewer
-    if "shell" in name:
+    if "shell" in name or "puck" in name:
         v[:, 2] = v[:, 2].max() - v[:, 2]
         v[:, 0] = -v[:, 0]
     faces = v[np.array(tris)]

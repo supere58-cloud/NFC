@@ -45,9 +45,25 @@ CHANNELS = {
 }
 
 
-def landed_cost(price, ship, variant):
+# ---- screenless "tap to share" tag (Build D) ------------------------------
+TAP_COSTS = {
+    "printed puck (PETG, power, failed prints)": {"adhesive": 0.10, "magnet": 0.35},
+    "mount hardware (3M disc / 4 x 5x1.5 mm N52 + glue)": {"adhesive": 0.15, "magnet": 0.35},
+    "packaging (small card + bag)": {"adhesive": 0.40, "magnet": 0.40},
+}
+# name: (unit price, inbound shipping per unit at ~100 pcs, chip note)
+TAP_MODULES = {
+    "NTAG213 30mm anti-metal (GoToTags, 100 pcs)": (0.48, 0.15, "144 B"),
+    "NTAG215 30mm anti-metal (Tagstand)":          (0.85, 0.15, "504 B"),
+    "NTAG216 30mm anti-metal (GoToTags, low tier)": (0.98, 0.15, "888 B"),
+    "NTAG424 DNA anti-metal (SEKUREX, 10 pcs)":    (1.25, 0.15, "416 B, anti-clone"),
+}
+TAP_TARGET_PRICES = [5, 8, 10, 15, 20]
+
+
+def landed_cost(price, ship, variant, costs=None):
     module = (price + ship) * (1 + IMPORT_VAT)
-    extras = sum(c[variant] for c in COSTS.values())
+    extras = sum(c[variant] for c in (costs or COSTS).values())
     return (module + extras) * (1 + WASTE)
 
 
@@ -56,14 +72,15 @@ def selling_price(cost, pct, fixed):
     return ((1 + MARKUP) * cost + fixed) / (1 - pct)
 
 
-def main():
-    head = f"{'module':47s} {'build':26s} {'var':8s} {'cost':>7s}"
+def table(title, modules, costs, targets):
+    print(f"\n=== {title} ===")
+    head = f"{'module':47s} {'note':26s} {'var':8s} {'cost':>7s}"
     head += "".join(f" {c[:22]:>23s}" for c in CHANNELS)
     print(head)
     print("-" * len(head))
-    for name, (price, ship, build) in MODULES.items():
+    for name, (price, ship, build) in modules.items():
         for var in ("adhesive", "magnet"):
-            c = landed_cost(price, ship, var)
+            c = landed_cost(price, ship, var, costs)
             row = f"{name:47s} {build:26s} {var:8s} {c:7.2f}"
             row += "".join(f" {selling_price(c, *fee):23.2f}"
                            for fee in CHANNELS.values())
@@ -73,10 +90,16 @@ def main():
     head = f"{'retail price':>12s}" + "".join(f" {c[:22]:>23s}" for c in CHANNELS)
     print(head)
     print("-" * len(head))
-    for p in TARGET_PRICES:
+    for p in targets:
         print(f"{p:12.2f}" + "".join(
             f" {(p * (1 - pct) - fixed) / (1 + MARKUP):23.2f}"
             for pct, fixed in CHANNELS.values()))
+
+
+def main():
+    table("1.54in e-ink image tag", MODULES, COSTS, TARGET_PRICES)
+    table("Screenless tap-to-share tag", TAP_MODULES, TAP_COSTS,
+          TAP_TARGET_PRICES)
 
 
 if __name__ == "__main__":

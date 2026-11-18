@@ -13,6 +13,8 @@ Builds
      NFC-D1-0154 driver board.
   B  cradle for the Waveshare "1.54inch NFC-Powered e-Paper (G)" (already cased)
   C  cradle for the Good Display finished tag (GDNS0154AL / GDP0154NF2)
+  D  screenless "tap to share" puck for a round anti-metal (ferrite) NFC
+     sticker, NTAG213/215/216 or NTAG424 DNA, 25 mm or 30 mm
 
 Each build comes in two mounting variants:
   *_adhesive  flat back for a gel pad / VHB tape
@@ -81,6 +83,18 @@ class CasedModule:
 
 WAVESHARE_G = CasedModule(w=41.28, h=47.84, t=4.5)   # w,h listing; t VERIFY
 GOODDISPLAY_TAG = CasedModule(w=36.59, h=47.09, t=3.0)  # manufacturer figures
+
+
+@dataclass
+class TapTag:
+    """Build D: round anti-metal NFC sticker, inserted from the back."""
+    tag_dia: float = 30.0     # 25 or 30 mm are the common sizes
+    tag_t: float = 1.0        # VERIFY: anti-metal stickers are ~0.4-1.0 mm
+    fit: float = 0.25         # clearance per side
+    face: float = 0.6         # plastic over the antenna: keep it thin
+    wall: float = 1.8
+    edge_r: float = 0.6       # rounded front edge
+    magnet_dia: float = 58.0  # puck size for the magnet variant (MagSafe ring)
 
 
 # -------------------------------------------------------------------- helpers
@@ -178,6 +192,28 @@ def cradle(p: CasedModule, m: Magnets = None):
                       pocket=(round(iw, 2), round(ih, 2), p.t))
 
 
+# -------------------------------------------------------------------- build D
+def tap_puck(p: TapTag, m: Magnets = None):
+    """Printed face down. Tag goes in from the back, ferrite side out, and the
+    adhesive pad (or the magnets' side) closes the back against the phone."""
+    pocket_d = p.tag_dia + 2 * p.fit
+    depth = p.tag_t + 0.1
+    t = p.face + depth
+    dia = p.magnet_dia if m else pocket_d + 2 * p.wall
+    if m:
+        t = max(t, p.face + m.thick + m.extra_depth + 0.4)
+    body = cq.Workplane("XY").circle(dia / 2).extrude(t)
+    body = body.faces("<Z").edges().fillet(p.edge_r)
+    body = body.cut(cq.Workplane("XY").circle(pocket_d / 2).extrude(depth)
+                    .translate((0, 0, t - depth)))
+    if m:
+        r = m.ring_radius
+        pts = [(r, 0), (-r, 0), (0, r), (0, -r)]
+        body = cut_magnets(body, pts, m, t, from_top=True)
+    return body, dict(outer=(round(dia, 2), round(dia, 2), round(t, 2)),
+                      pocket=(round(pocket_d, 2), round(depth, 2)))
+
+
 # ----------------------------------------------------------------------- main
 def build_all():
     a, mg = BareModule(), Magnets()
@@ -193,6 +229,12 @@ def build_all():
             cradle(prm)
         parts[f"{tag}_cradle_magnet"], info[f"{tag}_cradle_magnet"] = \
             cradle(prm, mg)
+    for size in (25.0, 30.0):
+        tag = TapTag(tag_dia=size)
+        n = f"D_tap_puck_{int(size)}mm"
+        parts[f"{n}_adhesive"], info[f"{n}_adhesive"] = tap_puck(tag)
+    parts["D_tap_puck_30mm_magnet"], info["D_tap_puck_30mm_magnet"] = \
+        tap_puck(TapTag(), mg)
     return parts, info
 
 
